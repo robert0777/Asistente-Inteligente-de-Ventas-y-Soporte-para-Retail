@@ -42,11 +42,11 @@
 **App en vivo:** [https://asistente-inteligente-ventas-y-soporte-retail.streamlit.app/](https://asistente-inteligente-ventas-y-soporte-retail.streamlit.app/)
 
 ### 💬 Preguntas de ejemplo:
-- "¿Qué modelos de laptop tienen en catálogo?"
-- "¿Cuál es la política de devolución para electrónicos?"
+- "¿Qué tipos de productos y servicios tienen en catálogo?"
+- "¿Cuál es la política de devoluciones?"
 - "¿Cómo hago seguimiento a un pedido por Amazon?"
-- "¿Qué garantías ofrecen en servidores?"
-- "¿Aceptan pagos a meses sin intereses?"
+- "¿Qué garantías ofrecen en sus productos?"
+- "¿Aceptan pagos a crédito?"
 
 ## ⚡ Instalación Local
 
