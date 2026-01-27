@@ -25,7 +25,7 @@
 ├── app_retail 1.0.py              # Aplicación principal Streamlit
 ├── requirements.txt               # Dependencias Python
 ├── retail-icon.svg                # Icono de la aplicación
-├── Simple Data Architecture Diagram.png                # Diagrama Simplificado del Sistema
+├── Simple_Data_Architecture_Diagram.png                # Diagrama Simplificado del Sistema
 ├── .env                           # Variables de entorno (API keys)
 └── pdf_files_retail/              # Documentos de ejemplo para retail
     ├── Catálogo de Productos 2022_Comercializadora SECTH.pdf
@@ -134,7 +134,7 @@ Este proyecto sirve como **ejemplo demostrativo** para talleres sobre implementa
 ### 📐 Diagrama Simplificado del Sistema:
 
 <p align="center">
-  <img src="./Simple%20Data%20Architecture%20Diagram.png" alt="Arquitectura del Asistente Retail AI" width="400">
+  <img src="./Simple_Data_Architecture_Diagram.png" alt="Arquitectura del Asistente Retail AI" width="400">
   <br>
   <em>Diagrama de arquitectura simplificado - Para CEOs</em>
 </p>
