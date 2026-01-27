@@ -100,7 +100,7 @@ pypdf==3.17.0
 
 ### Variables de entorno (.env)
 ```env
-# Clave API de NVIDIA (obtener en: https://build.nvidia.com/)
+# Clave API de NVIDIA (obtener en: https://build.nvidia.com/meta/llama3-70b)
 NVIDIA_API_KEY=tu_clave_api_aqui
 ```
 
