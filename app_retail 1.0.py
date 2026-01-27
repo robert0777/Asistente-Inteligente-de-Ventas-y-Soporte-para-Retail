@@ -312,7 +312,7 @@ with st.sidebar:
     # Footer
     st.markdown("""
         <div style="position: fixed; bottom: 0; padding: 1rem; text-align: center; font-size: 0.8rem; color: #6B7280;">
-            © 2025 Asistente Retail AI
+            © 2026 Asistente Retail AI
         </div>
     """, unsafe_allow_html=True)
 
@@ -502,6 +502,6 @@ div.custom-footer {
 }
 </style>
 <div class="custom-footer">
-    Developed by Dr. Robert Hernández Martínez    |    robert@actuariayfinanzas.net    |    © 2025
+    Developed by Dr. Robert Hernández Martínez    |    robert@actuariayfinanzas.net    |    © 2026
 </div>
 """, unsafe_allow_html=True)
