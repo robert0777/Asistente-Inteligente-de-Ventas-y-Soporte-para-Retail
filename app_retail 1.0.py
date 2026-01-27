@@ -309,7 +309,7 @@ with st.sidebar:
     # Footer
     st.markdown("""
         <div style="position: fixed; bottom: 0; padding: 1rem; text-align: center; font-size: 0.8rem; color: #6B7280;">
-            © 2025 AI Chatbot Asesor de Pensiones IMSS
+            © 2025 Asistente Retail AI
         </div>
     """, unsafe_allow_html=True)
 
@@ -480,7 +480,7 @@ if prompt1:
         else:
             st.warning("⚠️ Por favor, primero cargue los documentos usando el botón 'Cargar y Procesar Documentos'")
     elif not is_greeting:
-        st.warning("Por favor, formule una pregunta específica sobre seguridad social.")
+        st.warning("Por favor, formule una pregunta específica sobre retail.")
 
 
 
