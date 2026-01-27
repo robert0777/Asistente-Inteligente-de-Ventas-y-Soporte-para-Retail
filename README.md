@@ -203,7 +203,7 @@ El proyecto incluye **7 documentos reales de retail mexicano (Ejemplos de archiv
 - 📝 Medium: [@chomchom216](https://chomchom216.medium.com/)
 - 🎓 Academia: [UNAM](https://unam1.academia.edu/Robert_Hernandez_Martinez)
 - 🔗 Credly: [Perfil profesional](https://www.credly.com/users/robert-hernandez.89bffe7b)
-
+- 🐙 GitHub: [Proyectos](https://github.com/robert0777)
 
 - **Metodología RADAR 2030** para el framework de implementación
 
