@@ -155,7 +155,8 @@ Este proyecto sirve como **ejemplo demostrativo** para talleres sobre implementa
 | **Procesamiento** | LangChain + PyPDF | Carga y división de documentos |
 | **Búsqueda** | RAG (Retrieval Augmented Generation) | Encontrar información relevante |
 | **IA** | NVIDIA Llama 3.3 70B | Generar respuestas en español |
-| **Infraestructura** | Streamlit Cloud | Hosting y despliegue |
+| **Hosting** | Streamlit Cloud | Despliegue y hosting de la aplicación |
+| **Lenguaje** | Python 3.8+ | Desarrollo del sistema |
 
 ### 📊 Características Clave:
 
@@ -164,14 +165,6 @@ Este proyecto sirve como **ejemplo demostrativo** para talleres sobre implementa
 - ✅ **Optimización de tokens** para control de costos
 - ✅ **Interfaz intuitiva** para usuarios no técnicos
 - ✅ **Escalable** a más documentos y tipos de archivo
-
-### 🔧 Stack Tecnológico
-- **Frontend:** Streamlit 1.28.0
-- **Procesamiento:** LangChain 0.0.340 + PyPDF
-- **Modelo IA:** NVIDIA Llama 3.3 70B via API
-- **RAG:** Retrieval Augmented Generation
-- **Hosting:** Streamlit Cloud
-- **Lenguaje:** Python 3.8+
 
 ### 📈 Escalabilidad
 El sistema está diseñado para:
