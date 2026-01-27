@@ -25,6 +25,7 @@
 ├── app_retail 1.0.py              # Aplicación principal Streamlit
 ├── requirements.txt               # Dependencias Python
 ├── retail-icon.svg                # Icono de la aplicación
+├── Simple Data Architecture Diagram.png                # Diagrama Simplificado del Sistema
 ├── .env                           # Variables de entorno (API keys)
 └── pdf_files_retail/              # Documentos de ejemplo para retail
     ├── Catálogo de Productos 2022_Comercializadora SECTH.pdf
