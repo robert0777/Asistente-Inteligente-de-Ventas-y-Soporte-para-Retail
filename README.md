@@ -128,18 +128,56 @@ Este proyecto sirve como **ejemplo demostrativo** para talleres sobre implementa
 | Predicción demanda | 4 | 3 | ⚠️ Parcial | 7 |
 | Mantenimiento predictivo | 5 | 2 | ❌ No | 3 |
 
-## 🛠️ Arquitectura Técnica
+## 🏗️ Arquitectura del Sistema
 
-```
-Usuario → Streamlit UI → LangChain → PDF Processing → RAG → Llama 3.3 → Respuesta
-```
+### 📐 Diagrama Simplificado del Sistema:
 
-### Componentes clave:
-1. **Frontend:** Streamlit (interfaz web en Python)
-2. **Procesamiento:** LangChain (carga y división de PDFs)
-3. **Modelo LLM:** NVIDIA Llama 3.3 70B via API
-4. **RAG:** Retrieval Augmented Generation para precisión
-5. **Gestión:** Tokenización con tiktoken
+<p align="center">
+  <img src="./Simple%20Data%20Architecture%20Diagram.png" alt="Arquitectura del Asistente Retail AI" width="400">
+  <br>
+  <em>Diagrama de arquitectura simplificado - Para CEOs</em>
+</p>
+
+### 🔄 Flujo del Proceso:
+
+1. **📥 Entrada:** Usuario ingresa pregunta en español sobre retail
+2. **📄 Procesamiento:** Sistema carga y analiza 7 documentos PDF
+3. **🔍 Búsqueda:** Motor RAG encuentra información relevante
+4. **🤖 Generación:** Llama 3.3 crea respuesta con citas específicas
+5. **📤 Salida:** Respuesta precisa mostrada en interfaz web
+
+### 🛠️ Componentes Técnicos:
+
+| Capa | Tecnología | Función |
+|------|------------|---------|
+| **Frontend** | Streamlit | Interfaz web interactiva |
+| **Procesamiento** | LangChain + PyPDF | Carga y división de documentos |
+| **Búsqueda** | RAG (Retrieval Augmented Generation) | Encontrar información relevante |
+| **IA** | NVIDIA Llama 3.3 70B | Generar respuestas en español |
+| **Infraestructura** | Streamlit Cloud | Hosting y despliegue |
+
+### 📊 Características Clave:
+
+- ✅ **Procesamiento en español** con normalización de texto
+- ✅ **Citas específicas** de documentos fuente
+- ✅ **Optimización de tokens** para control de costos
+- ✅ **Interfaz intuitiva** para usuarios no técnicos
+- ✅ **Escalable** a más documentos y tipos de archivo
+
+### 🔧 Stack Tecnológico
+- **Frontend:** Streamlit 1.28.0
+- **Procesamiento:** LangChain 0.0.340 + PyPDF
+- **Modelo IA:** NVIDIA Llama 3.3 70B via API
+- **RAG:** Retrieval Augmented Generation
+- **Hosting:** Streamlit Cloud
+- **Lenguaje:** Python 3.8+
+
+### 📈 Escalabilidad
+El sistema está diseñado para:
+- Agregar más documentos PDF fácilmente
+- Soportar múltiples usuarios simultáneos
+- Integrarse con APIs de inventario/CRM
+- Extenderse a otros sectores (manufactura, salud, finanzas)
 
 ## 📊 Documentos Incluidos
 
