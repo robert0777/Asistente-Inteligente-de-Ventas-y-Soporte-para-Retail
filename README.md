@@ -75,6 +75,8 @@ Crear archivo `.env` (basado en `.env.example` si existe):
 ```env
 NVIDIA_API_KEY=tu_clave_api_aqui
 ```
+Genera una API key de prueba gratis aquí:
+https://build.nvidia.com/meta/llama3-70b
 
 ### 5. Ejecutar la aplicación
 ```bash
