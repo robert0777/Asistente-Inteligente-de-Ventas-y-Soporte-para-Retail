@@ -304,21 +304,32 @@ if st.button("Click aquí para Cargar y Procesar Documentos en el Sistema"):
         except Exception as e:
             st.error(f"Error al cargar los documentos: {str(e)}")
 
+
+
+
+
+
+
+
+
+
+
 if prompt1:
     is_greeting, greeting_response, actual_question = st.session_state.greeting_handler.process_input(prompt1)
     
-    if is_greeting:
+    # 1. Display greeting message if detected
+    if is_greeting and greeting_response:
         st.write(greeting_response)
-        
-    query_to_process = actual_question if actual_question else (prompt1 if not is_greeting else None)
     
-    if query_to_process:
+    # 2. ONLY run document processing if an actual question exists after removing greetings
+    if actual_question and actual_question.strip():
         if "documents" in st.session_state:
             try:
                 with st.spinner('Analizando documentos...'):
                     start = time.process_time()
                     
-                    selected_chunks = select_relevant_chunks(query_to_process, st.session_state.documents)
+                    # Run search using actual_question
+                    selected_chunks = select_relevant_chunks(actual_question, st.session_state.documents)
                     
                     docs_used = {}
                     for chunk in selected_chunks:
@@ -341,7 +352,7 @@ if prompt1:
                             "role": "user",
                             "content": RETAIL_USER_TEMPLATE.format(
                                 context=context,
-                                question=query_to_process
+                                question=actual_question  # Fixed: changed from query_to_process
                             )
                         }
                     ]
@@ -373,6 +384,10 @@ if prompt1:
             st.warning("⚠️ Por favor, primero cargue los documentos usando el botón 'Click aquí para Cargar y Procesar Documentos en el Sistema'")
     elif not is_greeting:
         st.warning("Por favor, formule una pregunta específica sobre retail.")
+
+
+
+
 
 # Footer
 st.markdown("""
