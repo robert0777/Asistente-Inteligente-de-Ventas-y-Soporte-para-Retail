@@ -12,7 +12,7 @@
 
 **Asistente Retail AI** es una solución conversacional basada en **IA Generativa y RAG (Retrieval-Augmented Generation)** diseñada para el sector retail mexicano. El sistema permite realizar consultas en lenguaje natural sobre catálogos de productos, políticas comerciales, garantías, manuales de gestión de pedidos y términos de venta.
 
-Esta versión actualizada migra la arquitectura de modelos LLM hacia **OpenRouter** incorporando un mecanismo de **fallback multi-modelo streaming** (con soporte para modelos gratuitos como *MiniMax M3*, *Gemma 4 31B*, *Cohere North Mini Code* y *OpenRouter Free Router*), detección inteligente de saludos contextuales (`GreetingHandler`) según la hora del día, y scoring heurístico de relevancia de chunks con truncado de contexto optimizado.
+Esta versión utiliza la arquitectura de modelos LLM disponible en **OpenRouter** incorporando un mecanismo de **fallback multi-modelo streaming** (con soporte para modelos gratuitos como *MiniMax M3*, *Gemma 4 31B*, *Cohere North Mini Code* y *OpenRouter Free Router*), detección inteligente de saludos contextuales (`GreetingHandler`) según la hora del día, y scoring heurístico de relevancia de chunks con truncado de contexto optimizado.
 
 ---
 
@@ -20,7 +20,7 @@ Esta versión actualizada migra la arquitectura de modelos LLM hacia **OpenRoute
 
 - 🤖 **Múltiples Modelos LLM vía OpenRouter con Fallback:** Intenta llamadas en streaming a través de una lista de modelos gratuitos de alta capacidad (`minimax/minimax-m3:free`, `google/gemma-4-31b:free`, `cohere/north-mini-code:free`, `openrouter/free-models-router`).
 - 💬 **Manejador Inteligente de Saludos (`GreetingHandler`):** Filtra y procesa saludos en español ("hola", "buenos días", "buenas noches"), respondiendo dinámicamente según la hora local sin realizar llamadas innecesarias a la base vectorial ni a la API si no existe una pregunta técnica asociada.
-- 📚 **Carga y Normalización Automática de Documentos PDF:** Extrae y normaliza texto comercial en español desde `pdf_files_retail/`, reemplazando abreviaturas comunes y estandarizando caracteres.
+- 📚 **Carga y Normalización Automática de Documentos PDF:** Extrae y normaliza texto comercial en español desde `pdf_files_retail/`, reemplazando abreviaturas comunes y estandarizando caracteres. Nuevos documentos pueden ser actualizados en el directorio de acuerdo a la evolución de la operación del negocio.
 - 🎯 **Algoritmo de Relevancia de Chunks & Control de Tokens:** Utiliza `tiktoken` (modelo `gpt-3.5-turbo`) para calcular la densidad léxica y ajustar la ventana de contexto dinámicamente sin exceder los límites de tokens (`max_total_tokens=6000`).
 - 🎨 **Interfaz de Usuario Avanzada en Streamlit:** Barra lateral personalizada con branding del autor, enlaces académicos y profesionales, expanders para inspección directa de extractos consultados y métricas de tiempo de procesamiento en tiempo real.
 
@@ -122,7 +122,7 @@ faiss-cpu>=1.7.4
 ## 👤 Autor
 
 **Dr. Robert Hernández Martínez**  
-*Consultor en IA Aplicada, Finanzas y Modelado de Riesgos*
+*Consultant in Actuarial Science, Finance, Risk Modeling, and Applied AI*
 
 - 📧 Email: [robert@actuariayfinanzas.net](mailto:robert@actuariayfinanzas.net)
 - 📝 Medium: [@chomchom216](https://chomchom216.medium.com/)
@@ -132,4 +132,4 @@ faiss-cpu>=1.7.4
 
 ---
 
-© 2026 Asistente Retail AI. Licencia MIT.
+© 2026 Asistente Retail AI.
