@@ -1,33 +1,41 @@
 # 🛒 Asistente Retail AI - Chatbot Inteligente para Retail
 
 [![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://asistente-inteligente-ventas-y-soporte-retail.streamlit.app/)
-![Python](https://img.shields.io/badge/Python-3.8+-blue.svg)
+![Python](https://img.shields.io/badge/Python-3.9+-blue.svg)
 ![LangChain](https://img.shields.io/badge/LangChain-RAG-orange.svg)
+![OpenRouter](https://img.shields.io/badge/OpenRouter-API-purple.svg)
 ![License](https://img.shields.io/badge/License-MIT-green.svg)
 
 **Aplicación web en vivo:** [🌐 https://asistente-inteligente-ventas-y-soporte-retail.streamlit.app/](https://asistente-inteligente-ventas-y-soporte-retail.streamlit.app/)
 
 ## 📋 Descripción
 
-**Asistente Retail AI** es un chatbot inteligente que utiliza **IA Generativa (RAG + Llama 3.3)** para analizar documentos comerciales de retail y responder preguntas específicas sobre productos, políticas y procesos en Español.
+**Asistente Retail AI** es una solución conversacional basada en **IA Generativa y RAG (Retrieval-Augmented Generation)** diseñada para el sector retail mexicano. El sistema permite realizar consultas en lenguaje natural sobre catálogos de productos, políticas comerciales, garantías, manuales de gestión de pedidos y términos de venta.
 
-### ✨ Características
-- ✅ **Consulta inteligente** de 7 tipos de documentos retail (Ejemplos de archivos PDF encontrados en internet)
-- ✅ **Respuestas precisas** citando fuentes específicas
-- ✅ **Procesamiento en español** con normalización de texto
-- ✅ **Interfaz web intuitiva** con Streamlit
-- ✅ **Arquitectura RAG** para máxima precisión
-- ✅ **Optimización de tokens** para control de costos
+Esta versión actualizada migra la arquitectura de modelos LLM hacia **OpenRouter** incorporando un mecanismo de **fallback multi-modelo streaming** (con soporte para modelos gratuitos como *MiniMax M3*, *Gemma 4 31B*, *Cohere North Mini Code* y *OpenRouter Free Router*), detección inteligente de saludos contextuales (`GreetingHandler`) según la hora del día, y scoring heurístico de relevancia de chunks con truncado de contexto optimizado.
+
+---
+
+## ✨ Características Principales
+
+- 🤖 **Múltiples Modelos LLM vía OpenRouter con Fallback:** Intenta llamadas en streaming a través de una lista de modelos gratuitos de alta capacidad (`minimax/minimax-m3:free`, `google/gemma-4-31b:free`, `cohere/north-mini-code:free`, `openrouter/free-models-router`).
+- 💬 **Manejador Inteligente de Saludos (`GreetingHandler`):** Filtra y procesa saludos en español ("hola", "buenos días", "buenas noches"), respondiendo dinámicamente según la hora local sin realizar llamadas innecesarias a la base vectorial ni a la API si no existe una pregunta técnica asociada.
+- 📚 **Carga y Normalización Automática de Documentos PDF:** Extrae y normaliza texto comercial en español desde `pdf_files_retail/`, reemplazando abreviaturas comunes y estandarizando caracteres.
+- 🎯 **Algoritmo de Relevancia de Chunks & Control de Tokens:** Utiliza `tiktoken` (modelo `gpt-3.5-turbo`) para calcular la densidad léxica y ajustar la ventana de contexto dinámicamente sin exceder los límites de tokens (`max_total_tokens=6000`).
+- 🎨 **Interfaz de Usuario Avanzada en Streamlit:** Barra lateral personalizada con branding del autor, enlaces académicos y profesionales, expanders para inspección directa de extractos consultados y métricas de tiempo de procesamiento en tiempo real.
+
+---
 
 ## 🏗️ Estructura del Proyecto
 
-```
+```text
 ├── app_retail 1.0.py              # Aplicación principal Streamlit
-├── requirements.txt               # Dependencias Python
+├── requirements.txt               # Dependencias Python actualizadas
+├── README.md                      # Documentación del proyecto
 ├── retail-icon.svg                # Icono de la aplicación
-├── Simple_Data_Architecture_Diagram.png                # Diagrama Simplificado del Sistema
-├── .env                           # Variables de entorno (API keys)
-└── pdf_files_retail/              # Documentos de ejemplo para retail
+├── Simple_Data_Architecture_Diagram.png # Diagrama de arquitectura del sistema
+├── .env                           # Variables de entorno (OPENROUTER_API_KEY)
+└── pdf_files_retail/              # Directorio con documentos comerciales en PDF
     ├── Catálogo de Productos 2022_Comercializadora SECTH.pdf
     ├── Catálogo de Productos y Servicios_CLOUD Comercializadora.pdf
     ├── Generación de Pedidos Seguimiento Manual y Automático_Aspel_Amazon.pdf
@@ -37,31 +45,24 @@
     └── Términos y Condiciones Cliente Final_Transbel.pdf
 ```
 
-## 🚀 Demo Rápida
+---
 
-**App en vivo:** [https://asistente-inteligente-ventas-y-soporte-retail.streamlit.app/](https://asistente-inteligente-ventas-y-soporte-retail.streamlit.app/)
-
-### 💬 Preguntas de ejemplo:
-- "¿Qué tipos de productos y servicios tienen en catálogo?"
-- "¿Cuál es la política de devoluciones?"
-- "¿Cómo hago seguimiento a un pedido por Amazon?"
-- "¿Qué garantías ofrecen en sus productos?"
-- "¿Aceptan pagos a crédito?"
-
-## ⚡ Instalación Local
+## ⚡ Instalación y Configuración Local
 
 ### 1. Clonar el repositorio
 ```bash
-git clone https://github.com/tuusuario/asistente-retail-ai.git
+git clone https://github.com/robert0777/asistente-retail-ai.git
 cd asistente-retail-ai
 ```
 
-### 2. Crear entorno virtual
+### 2. Crear y activar entorno virtual
 ```bash
+# En Windows:
 python -m venv venv
-# Windows:
-venv\Scripts\activate
-# Mac/Linux:
+venv\Scriptsctivate
+
+# En macOS/Linux:
+python3 -m venv venv
 source venv/bin/activate
 ```
 
@@ -70,194 +71,65 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-### 4. Configurar API key de NVIDIA
-Crear archivo `.env` (basado en `.env.example` si existe):
-```env
-NVIDIA_API_KEY=tu_clave_api_aqui
-```
-Genera una API key de prueba gratis aquí:
-https://build.nvidia.com/meta/llama3-70b
+### 4. Configurar variables de entorno
+Crea un archivo `.env` en el directorio raíz con tu API Key de OpenRouter:
 
-### 5. Ejecutar la aplicación
+```env
+OPENROUTER_API_KEY=tu_openrouter_api_key_aqui
+```
+
+> 💡 Puedes obtener una API Key en [OpenRouter.ai](https://openrouter.ai/).
+
+### 5. Ejecutar la aplicación Streamlit
 ```bash
 streamlit run "app_retail 1.0.py"
 ```
 
-## 📦 Dependencias
+---
 
-**requirements.txt:**
+## 📦 Dependencias (`requirements.txt`)
+
 ```txt
-streamlit==1.28.0
-openai==1.3.0
-langchain==0.0.340
-langchain-community==0.0.10
-tiktoken==0.5.1
-python-dotenv==1.0.0
-pypdf==3.17.0
+streamlit>=1.30.0
+langchain-core>=0.1.0
+langchain-community>=0.0.20
+langchain-nvidia-ai-endpoints>=0.1.0
+langgraph>=0.0.20
+openai>=1.0.0
+tiktoken>=0.5.0
+pypdf>=3.0.0
+python-dotenv>=1.0.0
+reportlab>=4.0.0
+faiss-cpu>=1.7.4
 ```
 
-## 🔧 Configuración
+---
 
-### Variables de entorno (.env)
-```env
-# Clave API de NVIDIA (obtener en: https://build.nvidia.com/meta/llama3-70b)
-NVIDIA_API_KEY=tu_clave_api_aqui
+## 🛠️ Arquitectura y Flujo de Datos
+
+```
+[Usuario] ──> [GreetingHandler (Filtro Saludos/Hora)] ──> [Extracción de Pregunta]
+                                                                  │
+                                                                  ▼
+[Carga de PDFs] ──> [Text Splitter (tiktoken)] ──> [Scoring de Relevancia de Chunks]
+                                                                  │
+                                                                  ▼
+[Streamlit UI] <── [Streaming Output] <── [Fallback OpenRouter Client (LLMs)]
 ```
 
-### Documentos personalizados
-Para usar tus propios documentos:
-1. Coloca tus PDFs en la carpeta `pdf_files_retail/`
-2. Asegúrate de que estén en español y sean archivos de texto (no escaneados)
-3. Reinicia la aplicación
-
-## 🎯 Caso de Uso para Talleres CEOs
-
-Este proyecto sirve como **ejemplo demostrativo** para talleres sobre implementación de IA siguiendo la metodología **RADAR 2030**:
-
-### **Problema empresarial:**
-- Documentos comerciales dispersos en múltiples PDFs
-- Dificultad para encontrar información específica rápidamente
-- Consultas repetitivas al personal de soporte
-
-### **Solución demostrada:**
-- Chatbot que consulta 7 tipos de documentos retail
-- Respuestas precisas en menos de 5 segundos
-- Cita de fuentes para verificación
-
-### **Matriz de priorización RADAR 2030:**
-| Caso de uso | Impacto | Facilidad | Datos | Puntuación |
-|-------------|---------|-----------|-------|------------|
-| **Chatbot retail** | 5 | 4 | ✅ Sí | **9** |
-| Predicción demanda | 4 | 3 | ⚠️ Parcial | 7 |
-| Mantenimiento predictivo | 5 | 2 | ❌ No | 3 |
-
-## 🏗️ Arquitectura del Sistema
-
-### 📐 Diagrama Simplificado del Sistema:
-
-<p align="center">
-  <img src="./Simple_Data_Architecture_Diagram.png" alt="Arquitectura del Asistente Retail AI" width="400">
-  <br>
-  <em>Diagrama de arquitectura simplificado - Para CEOs</em>
-</p>
-
-### 🔄 Flujo del Proceso:
-
-1. **📥 Entrada:** Usuario ingresa pregunta en español sobre retail
-2. **📄 Procesamiento:** Sistema carga y analiza 7 documentos PDF
-3. **🔍 Búsqueda:** Motor RAG encuentra información relevante
-4. **🤖 Generación:** Llama 3.3 crea respuesta con citas específicas
-5. **📤 Salida:** Respuesta precisa mostrada en interfaz web
-
-### 🛠️ Componentes Técnicos:
-
-| Capa | Tecnología | Función |
-|------|------------|---------|
-| **Frontend** | Streamlit | Interfaz web interactiva |
-| **Procesamiento** | LangChain + PyPDF | Carga y división de documentos |
-| **Búsqueda** | RAG (Retrieval Augmented Generation) | Encontrar información relevante |
-| **IA** | NVIDIA Llama 3.3 70B | Generar respuestas en español |
-| **Hosting** | Streamlit Cloud | Despliegue y hosting de la aplicación |
-| **Lenguaje** | Python 3.8+ | Desarrollo del sistema |
-
-### 📊 Características Clave:
-
-- ✅ **Procesamiento en español** con normalización de texto
-- ✅ **Citas específicas** de documentos fuente
-- ✅ **Optimización de tokens** para control de costos
-- ✅ **Interfaz intuitiva** para usuarios no técnicos
-- ✅ **Escalable** a más documentos y tipos de archivo
-
-### 📈 Escalabilidad
-El sistema está diseñado para:
-- Agregar más documentos PDF fácilmente
-- Soportar múltiples usuarios simultáneos
-- Integrarse con APIs de inventario/CRM
-- Extenderse a otros sectores (manufactura, salud, finanzas)
-
-## 📊 Documentos Incluidos
-
-El proyecto incluye **7 documentos reales de retail mexicano (Ejemplos de archivos PDF encontrados en internet)**:
-
-| Documento | Tipo de información |
-|-----------|---------------------|
-| **Catálogo de Productos 2022** | Productos, especificaciones, precios |
-| **Catálogo Cloud** | Servicios SaaS, soluciones en la nube |
-| **Generación de Pedidos** | Procesos con Aspel y Amazon |
-| **Gestión de Pedidos** | Logística y distribución |
-| **Política de Devolución 2025** | Condiciones de devolución y garantías |
-| **Política de Venta** | Términos comerciales |
-| **Términos y Condiciones** | Aspectos legales y contractuales |
-
-## 🎨 Personalización
-
-### Para adaptar a tu empresa:
-1. **Reemplazar documentos:** Sube tus PDFs a `pdf_files_retail/`
-2. **Modificar prompt:** Edita `prompt_template` en el código
-3. **Cambiar branding:** Actualiza `retail-icon.svg` y títulos
-4. **Añadir integraciones:** Conectar a CRM, inventario, etc.
-
-### Sectores adaptables:
-- **Manufactura:** Manuales técnicos, especificaciones
-- **Salud:** Protocolos, guías médicas
-- **Finanzas:** Regulaciones, políticas internas
-- **Educación:** Material didáctico, normativas
-
-## ⚠️ Solución de Problemas
-
-### Error común: "No se encontraron archivos PDF"
-```bash
-# Asegúrate de que:
-1. La carpeta `pdf_files_retail/` existe
-2. Contiene archivos PDF (no vacía)
-3. Los PDFs no están protegidos por contraseña
-```
-
-### Error: "Failed to initialize NVIDIA client"
-```bash
-# Verificar:
-1. Archivo `.env` existe y tiene NVIDIA_API_KEY
-2. La API key es válida y tiene créditos
-3. Conexión a internet activa
-```
-
-## 📈 Métricas de Rendimiento
-
-- **Tiempo de carga:** < 10 segundos (7 PDFs)
-- **Tiempo de respuesta:** 3-5 segundos por consulta
-- **Precisión:** >90% citando fuentes correctas
-- **Disponibilidad:** 24/7 via Streamlit Cloud
+---
 
 ## 👤 Autor
 
 **Dr. Robert Hernández Martínez**  
-*Consultor en IA y Transformación Digital*
+*Consultor en IA Aplicada, Finanzas y Modelado de Riesgos*
 
-- 📧 Email: robert@actuariayfinanzas.net
+- 📧 Email: [robert@actuariayfinanzas.net](mailto:robert@actuariayfinanzas.net)
 - 📝 Medium: [@chomchom216](https://chomchom216.medium.com/)
-- 🎓 Academia: [UNAM](https://unam1.academia.edu/Robert_Hernandez_Martinez)
-- 🔗 Credly: [Perfil profesional](https://www.credly.com/users/robert-hernandez.89bffe7b)
-- 🐙 GitHub: [Proyectos](https://github.com/robert0777)
-
-- **Metodología RADAR 2030** para el framework de implementación
-
-
-
-**⭐ ¡Si este proyecto te es útil, por favor dale una estrella en GitHub!**
+- 🎓 Publicaciones Académicas: [UNAM Academia](https://unam1.academia.edu/Robert_Hernandez_Martinez)
+- 🏆 Certificaciones: [Credly Profile](https://www.credly.com/users/robert-hernandez.89bffe7b)
+- 🐙 GitHub: [@robert0777](https://github.com/robert0777)
 
 ---
 
-**🔗 Enlaces útiles:**
-- [App en vivo](https://asistente-inteligente-ventas-y-soporte-retail.streamlit.app/)
-
-**📁 Archivos importantes:**
-- `app_retail 1.0.py` - Código principal de la aplicación
-- `requirements.txt` - Dependencias de Python
-- `pdf_files_retail/` - Documentos de ejemplo para retail
-- `.env` - Configuración de API keys (no subir a GitHub)
-
-**🚀 Próximos pasos:**
-1. Clona este repositorio
-2. Configura tu API key de NVIDIA
-3. Ejecuta `streamlit run "app_retail 1.0.py"`
-4. ¡Comienza a hacer preguntas sobre retail!
+© 2026 Asistente Retail AI. Licencia MIT.
