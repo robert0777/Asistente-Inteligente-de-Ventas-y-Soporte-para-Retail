@@ -311,6 +311,10 @@ if st.button("Click aquí para Cargar y Procesar Documentos en el Sistema"):
 
 
 
+
+
+
+
 if prompt1:
     is_greeting, greeting_response, actual_question = st.session_state.greeting_handler.process_input(prompt1)
     
@@ -327,61 +331,51 @@ if prompt1:
                     
                     selected_chunks = select_relevant_chunks(actual_question, st.session_state.documents)
                     
-                    # Relevance score check against top match
-                    top_score = calculate_chunk_relevance(selected_chunks[0], actual_question) if selected_chunks else 0.0
-                    STRICTNESS_THRESHOLD = 0.05
+                    docs_used = {}
+                    for chunk in selected_chunks:
+                        doc_name = Path(chunk.metadata['source']).name
+                        if doc_name not in docs_used:
+                            docs_used[doc_name] = []
+                        docs_used[doc_name].append(chunk.page_content)
+                    
+                    context_parts = []
+                    for doc_name, contents in docs_used.items():
+                        joined_contents = "\n".join(contents)
+                        doc_section = f"[Documento: {doc_name}]\n{joined_contents}"
+                        context_parts.append(doc_section)
+                    
+                    context = truncate_context("\n\n".join(context_parts))
 
-                    if top_score < STRICTNESS_THRESHOLD:
-                        st.warning(
-                            "⚠️ No encontré información suficientemente relevante sobre ese tema en nuestros catálogos o políticas comerciales. "
-                            "Por favor intenta formular una pregunta sobre productos, garantías o pedidos."
-                        )
-                    else:
-                        docs_used = {}
-                        for chunk in selected_chunks:
-                            doc_name = Path(chunk.metadata['source']).name
-                            if doc_name not in docs_used:
-                                docs_used[doc_name] = []
-                            docs_used[doc_name].append(chunk.page_content)
-                        
-                        context_parts = []
-                        for doc_name, contents in docs_used.items():
-                            joined_contents = "\n".join(contents)
-                            doc_section = f"[Documento: {doc_name}]\n{joined_contents}"
-                            context_parts.append(doc_section)
-                        
-                        context = truncate_context("\n\n".join(context_parts))
+                    messages_payload = [
+                        {"role": "system", "content": RETAIL_SYSTEM_PROMPT},
+                        {
+                            "role": "user",
+                            "content": RETAIL_USER_TEMPLATE.format(
+                                context=context,
+                                question=actual_question
+                            )
+                        }
+                    ]
 
-                        messages_payload = [
-                            {"role": "system", "content": RETAIL_SYSTEM_PROMPT},
-                            {
-                                "role": "user",
-                                "content": RETAIL_USER_TEMPLATE.format(
-                                    context=context,
-                                    question=actual_question
-                                )
-                            }
-                        ]
-
-                        response_stream, used_model = generate_completion_with_fallback(
-                            openrouter_client,
-                            FREE_MODELS,
-                            messages_payload,
-                            temperature=0.6,
-                            max_tokens=3000
-                        )
-                        
-                        st.write(f"📝 Respuesta *(Modelo activo: `{used_model}`)*:")
-                        st.write_stream(response_stream)
-                        st.info(f"⏱️ Tiempo de procesamiento: {time.process_time() - start:.2f} segundos")
-                        
-                        st.write("\n📚 Documentos consultados:")
-                        for doc_name, doc_chunks in docs_used.items():
-                            with st.expander(f"Extractos de {doc_name}"):
-                                for i, chunk in enumerate(doc_chunks, 1):
-                                    st.write(f"Extracto {i}:")
-                                    st.write(chunk)
-                                    st.markdown("---")
+                    response_stream, used_model = generate_completion_with_fallback(
+                        openrouter_client,
+                        FREE_MODELS,
+                        messages_payload,
+                        temperature=0.6,
+                        max_tokens=3000
+                    )
+                    
+                    st.write(f"📝 Respuesta *(Modelo activo: `{used_model}`)*:")
+                    st.write_stream(response_stream)
+                    st.info(f"⏱️ Tiempo de procesamiento: {time.process_time() - start:.2f} segundos")
+                    
+                    st.write("\n📚 Documentos consultados:")
+                    for doc_name, doc_chunks in docs_used.items():
+                        with st.expander(f"Extractos de {doc_name}"):
+                            for i, chunk in enumerate(doc_chunks, 1):
+                                st.write(f"Extracto {i}:")
+                                st.write(chunk)
+                                st.markdown("---")
             
             except Exception as e:
                 st.error(f"Error durante el procesamiento: {str(e)}")
@@ -396,11 +390,6 @@ if prompt1:
             "- Políticas de devolución, garantías y términos de venta.\n"
             "- Seguimiento y gestión de pedidos Aspel/Amazon."
         )
-
-
-
-
-
 
 
 
