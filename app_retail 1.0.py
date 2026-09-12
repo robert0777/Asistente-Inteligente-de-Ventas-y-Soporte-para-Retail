@@ -314,21 +314,21 @@ if st.button("Click aquí para Cargar y Procesar Documentos en el Sistema"):
 
 
 
+
 if prompt1:
     is_greeting, greeting_response, actual_question = st.session_state.greeting_handler.process_input(prompt1)
     
-    # 1. Display greeting message if detected
+    # 1. Display dynamic greeting message if detected
     if is_greeting and greeting_response:
         st.write(greeting_response)
     
-    # 2. ONLY run document processing if an actual question exists after removing greetings
+    # 2. Process technical question IF present
     if actual_question and actual_question.strip():
         if "documents" in st.session_state:
             try:
                 with st.spinner('Analizando documentos...'):
                     start = time.process_time()
                     
-                    # Run search using actual_question
                     selected_chunks = select_relevant_chunks(actual_question, st.session_state.documents)
                     
                     docs_used = {}
@@ -352,7 +352,7 @@ if prompt1:
                             "role": "user",
                             "content": RETAIL_USER_TEMPLATE.format(
                                 context=context,
-                                question=actual_question  # Fixed: changed from query_to_process
+                                question=actual_question
                             )
                         }
                     ]
@@ -367,7 +367,6 @@ if prompt1:
                     
                     st.write(f"📝 Respuesta *(Modelo activo: `{used_model}`)*:")
                     st.write_stream(response_stream)
-                    
                     st.info(f"⏱️ Tiempo de procesamiento: {time.process_time() - start:.2f} segundos")
                     
                     st.write("\n📚 Documentos consultados:")
@@ -382,8 +381,25 @@ if prompt1:
                 st.error(f"Error durante el procesamiento: {str(e)}")
         else:
             st.warning("⚠️ Por favor, primero cargue los documentos usando el botón 'Click aquí para Cargar y Procesar Documentos en el Sistema'")
-    elif not is_greeting:
-        st.warning("Por favor, formule una pregunta específica sobre retail.")
+            
+    # 3. If no technical question was supplied, guide the user directly
+    else:
+        st.info(
+            "💡 **¿En qué te puedo ayudar hoy?** Puedes preguntarme sobre:\n"
+            "- Precios y disponibilidad en nuestros catálogos.\n"
+            "- Políticas de devolución, garantías y términos de venta.\n"
+            "- Seguimiento y gestión de pedidos Aspel/Amazon."
+        )
+
+
+
+
+
+
+
+
+
+
 
 
 
