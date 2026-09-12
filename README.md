@@ -36,7 +36,6 @@ Esta versión utiliza la arquitectura de modelos LLM disponible en **OpenRouter*
 ├── README.md                      # Documentación completa del proyecto
 ├── retail-icon.svg                # Icono vectorial de la aplicación
 ├── Data Flow Diagram.jpg          # Diagrama de arquitectura RAG y flujo de interacción
-├── .env                           # Archivo de variables de entorno (OPENROUTER_API_KEY)
 └── pdf_files_retail/              # Directorio con los documentos comerciales en PDF
     ├── Catálogo de Productos 2022_Comercializadora SECTH.pdf
     ├── Catálogo de Productos y Servicios_CLOUD Comercializadora.pdf
