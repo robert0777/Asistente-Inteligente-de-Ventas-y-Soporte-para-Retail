@@ -121,48 +121,31 @@ El flujo de procesamiento del **Asistente Retail AI** combina un preprocesamient
 
 ---
 
-## ⚡ Instalación y Configuración Local
+## ⚙️ Deployment & Streamlit Setup
 
-### 1. Clonar el repositorio
+### 1. Repository Setup
+Push the application repository to GitHub:
 ```bash
 git clone https://github.com/robert0777/asistente-retail-ai.git
 cd asistente-retail-ai
 ```
 
-### 2. Crear y activar entorno virtual
-```bash
-# En Windows:
-python -m venv venv
-venv\Scripts\activate
-
-# En macOS/Linux:
-python3 -m venv venv
-source venv/bin/activate
-```
-
-### 3. Instalar dependencias
-```bash
-pip install -r requirements.txt
-```
-
-### 4. Configurar variables de entorno
-Crea un archivo `.env` en la raíz del proyecto o añade el secreto en `.streamlit/secrets.toml`:
-
-**En `.env`:**
-```env
-OPENROUTER_API_KEY=tu_openrouter_api_key_aqui
-```
-
-**En `.streamlit/secrets.toml`:**
+### 2. Streamlit Cloud Secrets Setup
+In your deployed app dashboard on Streamlit Cloud, navigate to **Settings** -> **Secrets**, and store your OpenRouter API key:
 ```toml
-OPENROUTER_API_KEY = "tu_openrouter_api_key_aqui"
+OPENROUTER_API_KEY = "your_openrouter_api_key_here"
 ```
 
-> 💡 Puedes obtener una clave de API gratuita en [OpenRouter.ai](https://openrouter.ai/).
+### 3. Add Target PDF Documents
+Place official retail documentation PDF files into:
+```text
+./pdf_files_retail/
+```
 
-### 5. Ejecutar la aplicación Streamlit
-```bash
-streamlit run "app_retail 1.0.py"
+### 4. Application Execution Entry
+Point Streamlit Cloud deployment to:
+```text
+app_retail 1.0.py
 ```
 
 ---
