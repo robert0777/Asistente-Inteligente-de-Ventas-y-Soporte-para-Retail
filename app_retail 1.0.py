@@ -5,16 +5,14 @@ import datetime
 import re
 from pathlib import Path
 from functools import lru_cache
-from dotenv import load_dotenv
 import tiktoken
 
 from openai import OpenAI
 from langchain_community.document_loaders import PyPDFDirectoryLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 
-# Load environment variables explicitly
-env_path = Path(__file__).parent / ".env"
-load_dotenv(dotenv_path=env_path, override=True)
+
+
 
 DATA_DIR = "./pdf_files_retail"
 
@@ -220,11 +218,13 @@ with st.sidebar:
         </div>
     """, unsafe_allow_html=True)
 
-# OpenRouter Client Setup
-openrouter_key = os.getenv("OPENROUTER_API_KEY")
+
+
+openrouter_key = st.secrets.get("OPENROUTER_API_KEY") or os.getenv("OPENROUTER_API_KEY")
+
 
 if not openrouter_key:
-    st.error("⚠️ OPENROUTER_API_KEY no encontrada en las variables de entorno.")
+    st.error("⚠️ OPENROUTER_API_KEY no encontrada en st.secrets ni en las variables de entorno.")
     st.stop()
 
 try:
