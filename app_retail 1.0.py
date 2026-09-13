@@ -232,17 +232,27 @@ try:
         base_url="https://openrouter.ai/api/v1",
         api_key=openrouter_key
     )
+    
+    
+     
     FREE_MODELS = [
-        "minimax/minimax-m3:free",
         "google/gemma-4-31b:free",
+        "google/gemma-4-26b-a4b:free",
+        "minimax/minimax-m3:free",
+        "thinking-machines/inkling-small:free",
+        "nvidia/nemotron-3-nano-omni:free",
         "cohere/north-mini-code:free",
         "openrouter/free-models-router"
     ]
+    
+    
+    
+    
 except Exception as e:
     st.error(f"Error al inicializar el cliente de OpenRouter: {str(e)}")
     st.stop()
 
-def generate_completion_with_fallback(client, models_list, messages, temperature=0.6, max_tokens=3000):
+def generate_completion_with_fallback(client, models_list, messages, temperature=0.6, max_tokens=5000):
     last_error = None
     for model in models_list:
         try:
@@ -362,7 +372,7 @@ if prompt1:
                         FREE_MODELS,
                         messages_payload,
                         temperature=0.6,
-                        max_tokens=3000
+                        max_tokens=5000
                     )
                     
                     st.write(f"📝 Respuesta *(Modelo activo: `{used_model}`)*:")
