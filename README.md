@@ -12,17 +12,17 @@
 
 **Asistente Retail AI** es una solución conversacional basada en **IA Generativa y RAG (Retrieval-Augmented Generation)** diseñada para el sector retail mexicano. El sistema permite realizar consultas en lenguaje natural sobre catálogos de productos, políticas comerciales, garantías, manuales de gestión de pedidos y términos de venta.
 
-Esta versión utiliza la arquitectura de modelos LLM disponible en **OpenRouter** incorporando un mecanismo de **fallback multi-modelo streaming** (con soporte para modelos gratuitos como `minimax/minimax-m3:free`, `google/gemma-4-31b:free`, `cohere/north-mini-code:free` y `openrouter/free-models-router`), detección inteligente de saludos contextuales (`GreetingHandler`) según la hora local, y scoring heurístico de relevancia de chunks con truncado de contexto optimizado mediante `tiktoken`.
+Esta versión utiliza la arquitectura de modelos LLM disponible en **OpenRouter** incorporando un mecanismo de **fallback multi-modelo streaming** (con soporte para modelos como `google/gemma-4-31b:free`, `google/gemma-4-26b-a4b:free`, `minimax/minimax-m3:free`, entre otros), un límite de generación ampliado a 5,000 tokens, detección inteligente de saludos contextuales (`GreetingHandler`) según la hora local, y scoring heurístico de relevancia de chunks con truncado de contexto optimizado mediante `tiktoken`.
 
 ---
 
 ## ✨ Características Principales
 
-- 🤖 **Múltiples Modelos LLM vía OpenRouter con Fallback:** Intenta llamadas en streaming a través de una lista de modelos gratuitos de alta capacidad (`minimax/minimax-m3:free`, `google/gemma-4-31b:free`, `cohere/north-mini-code:free`, `openrouter/free-models-router`). Si un modelo falla, el sistema conmuta automáticamente al siguiente.
+- 🤖 **Múltiples Modelos LLM vía OpenRouter con Fallback:** Intenta llamadas en streaming a través de una lista optimizada de modelos gratuitos de alta capacidad (`google/gemma-4-31b:free`, `google/gemma-4-26b-a4b:free`, `minimax/minimax-m3:free`, `thinking-machines/inkling-small:free`, `nvidia/nemotron-3-nano-omni:free`, `cohere/north-mini-code:free`, `openrouter/free-models-router`). Si un modelo falla, el sistema conmuta automáticamente al siguiente.
 - 💬 **Manejador Inteligente de Saludos (`GreetingHandler`):** Filtra y procesa saludos en español ("hola", "buenos días", "buenas noches"), respondiendo dinámicamente según la hora local (mañana, tarde, noche) sin realizar llamadas innecesarias a la API ni procesar la base vectorial si no existe una pregunta técnica asociada.
-- 📚 **Carga y Normalización Automática de Documentos PDF:** Extrae y normaliza texto comercial en español desde el directorio `./pdf_files_retail/`, reemplazando abreviaturas comunes (ej. *D.* -> *Doctor*, *Dra.* -> *Doctora*) y estandarizando espacios y caracteres.
+- 📚 **Carga y Normalización Automática de Documentos PDF:** Extrae y normaliza texto comercial en español desde el directorio `./pdf_files_retail/`, reemplazando abreviaturas comunes y estandarizando espacios y caracteres.
 - 🎯 **Algoritmo de Scoring & Relevancia de Chunks:** Utiliza `tiktoken` (modelo `gpt-3.5-turbo`) para calcular la superposición léxica y ajustar la ventana de contexto sin exceder el límite seguro de tokens (`max_total_tokens=6000`).
-- 🔄 **Respuestas en Streaming & Fuentes Citadas:** Presenta las respuestas generadas en tiempo real mediante respuestas en streaming (`st.write_stream`), desglosando y deduplicando las fuentes consultadas en un menú desplegable (`expander`) para garantizar transparencia e inspección detallada.
+- 🔄 **Respuestas en Streaming & Fuentes Citadas:** Presenta las respuestas generadas en tiempo real mediante respuestas en streaming (`st.write_stream`) con un tope de generación de hasta `max_tokens=5000`, desglosando y deduplicando las fuentes consultadas en un menú desplegable (`expander`) para garantizar transparencia e inspección detallada.
 - 🎨 **Interfaz Personalizada en Streamlit:** Diseño limpio con barra lateral interactiva, branding del autor, enlaces a artículos en Medium, publicaciones académicas y credenciales profesionales.
 
 ---
@@ -47,65 +47,6 @@ Esta versión utiliza la arquitectura de modelos LLM disponible en **OpenRouter*
 ```
 
 ---
-
-## 📊 Arquitectura del Sistema y Flujo de Datos
-
-El flujo de procesamiento del **Asistente Retail AI** combina un preprocesamiento contextual con un pipeline RAG resiliente:
-
-```text
-[Usuario: Ingresa consulta en Streamlit]
-                   │
-                   ▼
-       [GreetingHandler.process_input]
-                   │
-         ┌─────────┴─────────┐
-         │ ¿Se detectó       │
-         │   saludo?         │
-         └────┬─────────┬────┘
-           Sí │         │ No
-              ▼         │
-   [Imprime saludo según]│
-        [hora local]    │
-              │         │
-              └────┬────┘
-                   ▼
-         ┌───────────────────┐
-         │ ¿Existe pregunta  │
-         │   técnica?        │
-         └────┬─────────┬────┘
-           No │         │ Sí
-              ▼         ▼
-  [Despliega st.info  ┌───────────────────┐
-   con menú de temas] │ ¿Documentos en    │
-                      │ session_state?    │
-                      └────┬─────────┬────┘
-                        No │         │ Sí
-                           ▼         ▼
-               [Muestra warning:  [select_relevant_chunks
-                Cargar primero]    & scoring léxico]
-                                             │
-                                             ▼
-                                  [Construye contexto
-                                  unificado por fuente]
-                                             │
-                                             ▼
-                                  [Truncate context:
-                                  Límite tokens tiktoken]
-                                             │
-                                             ▼
-                                  [generate_completion_with_fallback:
-                                  OpenRouter API]
-                                             │
-                                    ┌────────┴────────┐
-                                    │ ¿Respuesta     │
-                                    │  exitosa?       │
-                                    └────┬───────┬────┘
-                                      Sí │       │ Error
-                                         ▼       ▼
-                            [Muestra respuesta   [Prueba siguiente
-                             streaming y         modelo en
-                             expanders fuentes]  FREE_MODELS]
-```
 
 ### Explicación del Flujo:
 1. **Entrada de Usuario:** El usuario ingresa una consulta en la interfaz de Streamlit.
